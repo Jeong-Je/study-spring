@@ -3,6 +3,7 @@ package com.mysite.sbb.question;
 import com.mysite.sbb.user.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.config.ConfigDataLocationNotFoundException;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -48,5 +49,16 @@ public class QuestionService {
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page,10, Sort.by(sorts));
         return this.questionRepository.findAll(pageable);
+    }
+
+    public void modify(Question question, String subject, String content){
+        question.setSubject(subject);
+        question.setContent(content);
+        question.setModifyDate(LocalDateTime.now());
+        this.questionRepository.save(question);
+    }
+
+    public void delete(Question question) {
+        this.questionRepository.delete(question);
     }
 }
